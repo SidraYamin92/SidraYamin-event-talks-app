@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Talks Event Schedule</title>
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+
+h1 {
+    margin: 0;
+}
+
+main {
+    padding: 20px;
+    max-width: 900px;
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.search-container {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.search-container input[type="text"] {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.search-container button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.search-container button:hover {
+    background-color: #0056b3;
+}
+
+.talk-card, .break-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    padding: 15px;
+    transition: box-shadow 0.3s ease;
+}
+
+.talk-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.talk-card h2, .break-card h2 {
+    margin-top: 0;
+    color: #0056b3;
+}
+
+.talk-card p, .break-card p {
+    margin: 5px 0;
+}
+
+.talk-card .speakers {
+    font-style: italic;
+    color: #555;
+}
+
+.talk-card .categories {
+    font-size: 0.9em;
+    color: #777;
+    margin-top: 10px;
+}
+
+.talk-card .category-tag {
+    background-color: #e0e0e0;
+    padding: 3px 8px;
+    border-radius: 3px;
+    margin-right: 5px;
+    display: inline-block;
+}
+
+.break-card {
+    background-color: #e2f0cb; /* Light green for breaks */
+    border-color: #c6e492;
+}
+
+.talk-card.filtered-out {
+    display: none;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #777;
+    font-size: 0.9em;
+}
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Tech Talks Event Schedule</h1>
+        <p>A day filled with insightful technical discussions.</p>
+    </header>
+
+    <main>
+        <div class="search-container">
+            <input type="text" id="categorySearch" placeholder="Search by category (e.g., AI, Node.js)">
+            <button id="clearSearch">Clear Search</button>
+        </div>
+
+        <section id="schedule">
+            <!-- Schedule will be loaded here by JavaScript -->
+            <p>Loading schedule...</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Tech Talks Event</p>
+    </footer>
+
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const scheduleContainer = document.getElementById('schedule');
+    const categorySearchInput = document.getElementById('categorySearch');
+    const clearSearchButton = document.getElementById('clearSearch');
+    let allScheduleData = []; // To store the fetched schedule data
+
+    async function fetchSchedule() {
+        try {
+            // Because the frontend HTML is now serverless, it will be served directly.
+            // The backend Node.js server is no longer needed for serving the HTML,
+            // but the API endpoint for schedule data is still relevant if we host it separately.
+            // For a single serverless HTML file, we embed the data directly or simulate it.
+            // For this task, the request is for a single serverless HTML *file*.
+            // Thus, we will remove the backend dependency and embed the data directly.
+
+            // Simulate fetching data for the serverless HTML
+            // In a real scenario, this data would be pre-generated server-side
+            // and embedded as a JSON object in a script tag during the build process,
+            // or fetched from a serverless function endpoint.
+            const response = await fetch('/api/schedule');
+            if (!response.ok) {
+                // Fallback for when no Node.js server is running
+                console.warn("Node.js server not detected for /api/schedule. Using embedded data.");
+                allScheduleData = getEmbeddedScheduleData(); // A new function to provide data
+            } else {
+                allScheduleData = await response.json();
+            }
+
+            renderSchedule(allScheduleData);
+        } catch (error) {
+            console.error('Error fetching schedule:', error);
+            // Fallback if fetch fails completely
+            allScheduleData = getEmbeddedScheduleData();
+            renderSchedule(allScheduleData);
+        }
+    }
+
+    // Function to provide mock data directly in the HTML for serverless operation
+    function getEmbeddedScheduleData() {
+        let currentHour = 10; // Event starts at 10:00 AM
+        let currentMinute = 0;
+        const embeddedSchedule = [];
+
+        // Helper to format time
+        const formatTime = (hour, minute) => {
+            const h = String(hour).padStart(2, '0');
+            const m = String(minute).padStart(2, '0');
+            return `${h}:${m}`;
+        };
+
+        const embeddedTalks = [
+            {
+                id: 'talk1',
+                title: 'Introduction to Generative AI',
+                speakers: ['Dr. Anya Sharma'],
+                categories: ['AI', 'Machine Learning', 'Generative Models'],
+                duration: 60, // minutes
+                description: 'An overview of generative AI, its applications, and future trends.'
+            },
+            {
+                id: 'talk2',
+                title: 'Building Scalable Node.js Applications',
+                speakers: ['Mr. Ben Carter'],
+                categories: ['Node.js', 'Backend', 'Scalability'],
+                duration: 60,
+                description: 'Best practices for developing and scaling Node.js applications in a production environment.'
+            },
+            {
+                id: 'talk3',
+                title: 'Modern Frontend Development with React',
+                speakers: ['Ms. Chloe Davis'],
+                categories: ['Frontend', 'React', 'JavaScript'],
+                duration: 60,
+                description: 'Exploring the latest features and patterns in React for building dynamic user interfaces.'
+            },
+            {
+                id: 'talk4',
+                title: 'Cloud Security Fundamentals',
+                speakers: ['Dr. David Lee', 'Ms. Emily White'],
+                categories: ['Security', 'Cloud', 'DevOps'],
+                duration: 60,
+                description: 'Essential concepts and strategies for securing cloud-native applications and infrastructure.'
+            },
+            {
+                id: 'talk5',
+                title: 'Data Visualization with D3.js',
+                speakers: ['Mr. Frank Green'],
+                categories: ['Data Science', 'JavaScript', 'Visualization'],
+                duration: 60,
+                description: 'A hands-on session on creating interactive data visualizations using D3.js.'
+            },
+            {
+                id: 'talk6',
+                title: 'The Future of WebAssembly',
+                speakers: ['Ms. Grace Hall'],
+                categories: ['Web Development', 'Performance', 'WebAssembly'],
+                duration: 60,
+                description: 'Discovering the potential of WebAssembly beyond the browser for high-performance web applications.'
+            }
+        ];
+
+        embeddedTalks.forEach((talk, index) => {
+            const startTime = formatTime(currentHour, currentMinute);
+            currentMinute += talk.duration;
+            const endTime = formatTime(currentHour, currentMinute);
+
+            embeddedSchedule.push({
+                type: 'talk',
+                ...talk,
+                startTime,
+                endTime,
+            });
+
+            currentMinute += 10; // 10 minutes transition
+            if (currentMinute >= 60) {
+                currentHour += Math.floor(currentMinute / 60);
+                currentMinute %= 60;
+            }
+
+            if (index === 2) { // After the 3rd talk (index 2)
+                const lunchStartTime = formatTime(currentHour, currentMinute);
+                currentMinute += 60; // 1 hour lunch
+                const lunchEndTime = formatTime(currentHour, currentMinute);
+
+                embeddedSchedule.push({
+                    type: 'break',
+                    title: 'Lunch Break',
+                    startTime: lunchStartTime,
+                    endTime: lunchEndTime,
+                    duration: 60,
+                    description: 'Enjoy a delicious lunch!',
+                    categories: []
+                });
+
+                if (currentMinute >= 60) {
+                    currentHour += Math.floor(currentMinute / 60);
+                    currentMinute %= 60;
+                }
+            }
+        });
+        return embeddedSchedule;
+    }
+
+
+    function renderSchedule(scheduleToRender) {
+        scheduleContainer.innerHTML = ''; // Clear previous content
+
+        if (scheduleToRender.length === 0) {
+            scheduleContainer.innerHTML = '<p>No talks found matching your criteria.</p>';
+            return;
+        }
+
+        scheduleToRender.forEach(item => {
+            const card = document.createElement('div');
+            card.classList.add(item.type === 'talk' ? 'talk-card' : 'break-card');
+            card.dataset.categories = item.categories ? item.categories.map(cat => cat.toLowerCase()).join(',') : '';
+
+            let content = `<h2>${item.title}</h2>`;
+            content += `<p><strong>Time:</strong> ${item.startTime} - ${item.endTime}</p>`;
+
+            if (item.type === 'talk') {
+                content += `<p class="speakers"><strong>Speaker(s):</strong> ${item.speakers.join(', ')}</p>`;
+                content += `<p>${item.description}</p>`;
+                if (item.categories && item.categories.length > 0) {
+                    content += '<p class="categories"><strong>Categories:</strong> ';
+                    item.categories.forEach(cat => {
+                        content += `<span class="category-tag">${cat}</span>`;
+                    });
+                    content += '</p>';
+                }
+            } else if (item.type === 'break') {
+                content += `<p>${item.description}</p>`;
+            }
+
+            card.innerHTML = content;
+            scheduleContainer.appendChild(card);
+        });
+    }
+
+    function filterSchedule() {
+        const searchTerm = categorySearchInput.value.toLowerCase().trim();
+        if (!searchTerm) {
+            renderSchedule(allScheduleData); // Show all if search term is empty
+            return;
+        }
+
+        const filtered = allScheduleData.filter(item => {
+            if (item.type === 'talk' && item.categories) {
+                return item.categories.some(category =>
+                    category.toLowerCase().includes(searchTerm)
+                );
+            }
+            return false; // Don't filter breaks by category
+        });
+        renderSchedule(filtered);
+    }
+
+    // Event listeners for search
+    categorySearchInput.addEventListener('input', filterSchedule);
+    clearSearchButton.addEventListener('click', () => {
+        categorySearchInput.value = '';
+        filterSchedule(); // Re-render with all talks
+    });
+
+
+    // Initial fetch and render
+    fetchSchedule();
+});
+    </script>
+</body>
+</html>

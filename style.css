@@ -1,0 +1,110 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+
+h1 {
+    margin: 0;
+}
+
+main {
+    padding: 20px;
+    max-width: 900px;
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.search-container {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.search-container input[type="text"] {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.search-container button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.search-container button:hover {
+    background-color: #0056b3;
+}
+
+.talk-card, .break-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    padding: 15px;
+    transition: box-shadow 0.3s ease;
+}
+
+.talk-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.talk-card h2, .break-card h2 {
+    margin-top: 0;
+    color: #0056b3;
+}
+
+.talk-card p, .break-card p {
+    margin: 5px 0;
+}
+
+.talk-card .speakers {
+    font-style: italic;
+    color: #555;
+}
+
+.talk-card .categories {
+    font-size: 0.9em;
+    color: #777;
+    margin-top: 10px;
+}
+
+.talk-card .category-tag {
+    background-color: #e0e0e0;
+    padding: 3px 8px;
+    border-radius: 3px;
+    margin-right: 5px;
+    display: inline-block;
+}
+
+.break-card {
+    background-color: #e2f0cb; /* Light green for breaks */
+    border-color: #c6e492;
+}
+
+.talk-card.filtered-out {
+    display: none;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #777;
+    font-size: 0.9em;
+}
