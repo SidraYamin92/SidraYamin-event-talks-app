@@ -1,0 +1,5 @@
+# Node.js dependencies
+node_modules/
+
+# Optional: if you prefer not to commit lock files for simple projects
+# package-lock.json
